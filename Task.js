@@ -48,15 +48,26 @@ let nestedUserObject = {
 
 function valueFinder(obj,val) {
    return (path) => {
-        var p = path.split('.');
-            var value = obj;
-            var users = new Fun(p);
-            while(users.current()) {
-                if(value[p[users.currentIndex()]] == undefined) {
-                    return val;
-                } else {
-                    value = value[p[users.currentIndex()]];
-                }
+        var p=[];var j=0;
+        var us=new Fun(path);
+        while(us.current()) {
+            if(path.charAt(us.currentIndex()) == '.') {
+                j++;
+            }
+            else {
+                if (!p[j]) p[j] = '';
+                p[j] += path.charAt(us.currentIndex());
+            }
+            us.next();
+        }
+
+        var value = obj;
+        var users = new Fun(p);
+        while(users.current()) {
+            if(value[p[users.currentIndex()]] == undefined) {
+                return val;
+            } else {
+                value = value[p[users.currentIndex()]];                }
                 users.next();
             }
             return value;
