@@ -1,5 +1,6 @@
 let nestedUserObject = {
     user : {
+        place : 'hyd',
         profile : {
             personalDetails : {
                 name : 'Pragnya'
@@ -7,17 +8,20 @@ let nestedUserObject = {
         }
     }
 }
-function valueFinder(obj, path) {
-    var p = path.split('.');
-    var i, value = obj;
-    for(i=0; i < p.length; i++) {
-        if(value[p[i]] == undefined) {
-            return 'Does not exist';
-        } else {
-            value = value[p[i]];
+function valueFinder(obj,val) {
+   return (path) => {
+        var p = path.split('.');
+            var i=0, value = obj;
+            while(i < p.length) {
+                if(value[p[i]] == undefined) {
+                    return val;
+                } else {
+                    value = value[p[i]];
+                }
+                i++;
+            }
+            return value;
         }
-    }
-    return value;
-}
-var a = valueFinder(nestedUserObject , 'user.profile.personalDetails.name');
-var b = valueFinder(nestedUserObject , 'user.profile.personalDetails.name.age');
+    }       
+console.log(valueFinder(nestedUserObject,'xyz')('user.profile.personalDetails.name'));
+console.log(valueFinder(nestedUserObject,'xyz')('user.profile.personalDetails.name.age'));
